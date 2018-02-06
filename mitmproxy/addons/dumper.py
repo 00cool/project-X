@@ -6,7 +6,6 @@ import shutil
 
 import typing  # noqa
 
-from mitmproxy import contentviews
 from mitmproxy import ctx
 from mitmproxy import exceptions
 from mitmproxy import flowfilter

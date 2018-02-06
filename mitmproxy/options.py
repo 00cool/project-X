@@ -1,7 +1,7 @@
 from typing import Optional, Sequence
 
 from mitmproxy import optmanager
-from mitmproxy import contentviews
+#from mitmproxy import contentviews
 from mitmproxy.net import tls
 
 log_verbosity = [
@@ -233,7 +233,7 @@ class Options(optmanager.OptManager):
         self.add_option(
             "default_contentview", str, "auto",
             "The default content view mode.",
-            choices = [i.name.lower() for i in contentviews.views]
+            choices = []#[i.name.lower() for i in contentviews.views]
         )
         self.add_option(
             "save_stream_file", Optional[str], None,

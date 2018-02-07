@@ -18,3 +18,4 @@ db = firebase.database()
 
 def sendDataToFire(data):
   db.child("Google").push(data)
+  return True

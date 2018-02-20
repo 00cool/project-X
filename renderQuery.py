@@ -17,12 +17,14 @@ def request(flow: http.HTTPFlow) -> None:
             s = flow.request.path
             s = s[s.find('q=')+2:]
             s = s[:s.find('&')]
-            data["google"].append(s.replace('+', ' '))     
+            data["google"].append(s.replace('+', ' '))
+            print(data)     
         if (flow.request.url[:50] == "https://suggestqueries.google.com/complete/search?" and flow.request.method == 'GET'):
             ys = flow.request.path
             ys = ys[ys.find('q=')+2:]
             ys = ys[:ys.find('&')]
             data["youtube"].append(ys.replace('+', ' '))
+            print(data)
     else:
         #this below is required statment of code           
         #data["web"].append(flow.request.host)

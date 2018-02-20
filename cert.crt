@@ -1,0 +1,27 @@
+
+user  nginx;
+worker_processes  1;
+    
+error_log  /var/log/nginx/error.log warn;
+pid        /var/run/nginx.pid;
+
+
+events {
+    #events context
+    worker_connections  1024;
+}
+
+# main context
+    
+
+stream {
+    upstream backend {
+    least_conn;
+        server 192.168.1.10:9090;
+        server 192.168.1.10:9091;
+    }
+    server {
+        listen 8080;
+        proxy_pass backend;
+    }
+}

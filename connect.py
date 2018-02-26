@@ -16,6 +16,13 @@ user['idToken']
 db = firebase.database()
 
 
-def sendDataToFire(data):
-  db.child("Google").push(data)
-  return True
+def sendDataToFire(from_d, data):
+  try:
+    if from_d == "YouTube":
+      db.child(from_d).child("y").push(data)
+    elif from_d == "Google":
+      db.child(from_d).child("g").push(data)
+    elif from_d == "Web":
+      db.child(from_d).child("w").push(data)
+  except:
+    raise Exception

@@ -21,7 +21,9 @@ def sendDataToFire(from_d, data):
     if from_d == "YouTube":
       db.child(from_d).child("y").push(data)
     elif from_d == "Google":
-      db.child(from_d).child("g").push(data)
+      for x in data:
+        print(x[0])
+        db.child(from_d).child(str(x[0][7:]).replace("."," ")).push(x[1])
     elif from_d == "Web":
       db.child(from_d).child("w").push(data)
   except:

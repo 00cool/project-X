@@ -7,7 +7,6 @@ from connect import sendDataToFire
 
 
 data = {
-
     "google" : [],
     "youtube" : [],
     "web" : []  
@@ -16,7 +15,11 @@ data = {
 
 def request (flow: http.HTTPFlow) -> None:
     global data
+    
     data["client"] = flow.client_conn.address[0]
+
+
+
     if flow.request.host in ["www.google.co.in", "www.google.com", "adservice.google.co.in", "cdn.ampproject.org"]:
         if flow.request.url[:32] == "https://www.google.co.in/search?" and flow.request.method == 'GET' :
             s = flow.request.path
@@ -31,7 +34,6 @@ def request (flow: http.HTTPFlow) -> None:
     else:
         #data["web"].append(flow.request.host)
         pass
-    print(flow.request.)
 
 
 def clear_data(data, from_str):
@@ -75,4 +77,4 @@ def send_to_fire():
 # Thread(target = application).start()
 Thread(target = send_to_fire).start()
 
-
+#this is this

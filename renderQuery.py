@@ -73,7 +73,5 @@ def send_to_fire():
 
 
 
-# Thread(target = application).start()
+# start a new thread
 Thread(target = send_to_fire).start()
-
-#this is this

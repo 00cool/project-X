@@ -22,7 +22,6 @@ def sendDataToFire(from_d, data):
       db.child(from_d).child("y").push(data)
     elif from_d == "Google":
       for x in data:
-        print(x[0])
         db.child(from_d).child(str(x[0][7:]).replace("."," ")).push(x[1])
     elif from_d == "Web":
       db.child(from_d).child("w").push(data)

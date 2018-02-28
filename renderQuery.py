@@ -15,17 +15,15 @@ data = {
 
 def request (flow: http.HTTPFlow) -> None:
     global data
-    if flow.request.pretty_host in ["www.google.co.in", "www.google.com", "www.google.co.uk"]:
-        if flow.request.url[:32] == "https://www.google.co.in/search?" and flow.request.method == 'GET' :
+    if flow.request.pretty_host ==  "www.google.co.uk":
+        if flow.request.url[:32] == "https://www.google.co.uk/search?" and flow.request.method == 'GET' :
             s = flow.request.path
-            print("s",s)
             s = s[ ((s.find('q='))+2) :]   # find and trim the query from url
             s = s[:(s.find('&'))]
-            print("ss", s)
             ip = flow.client_conn.address[0]    # get the ip address for the query
             data["google"].append((ip, s.replace('+', ' ')))    # append the (ip, query) to list
-            print(data["google"])
     elif (flow.request.url[:50] == "https://suggestqueries.google.com/complete/search?" and flow.request.method == 'GET'):
+        print(flow.request.pretty_host)
         ip = flow.client_conn.address[0]    # get the ip address for the query
         ys = flow.request.path
         ys = ys[(ys.find('q=')+2):]

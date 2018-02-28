@@ -22,13 +22,14 @@ def request (flow: http.HTTPFlow) -> None:
             s = s[:(s.find('&'))]
             ip = flow.client_conn.address[0]    # get the ip address for the query
             data["google"].append((ip, s.replace('+', ' ')))    # append the (ip, query) to list
-    elif (flow.request.url[:50] == "https://suggestqueries.google.com/complete/search?" and flow.request.method == 'GET'):
-        print(flow.request.pretty_host)
-        ip = flow.client_conn.address[0]    # get the ip address for the query
-        ys = flow.request.path
-        ys = ys[(ys.find('q=')+2):]
-        ys = ys[:(ys.find('&'))]
-        data["youtube"].append((ip, ys.replace('+', ' ')))
+    elif flow.request.pretty_host == "suggestqueries.google.com":    
+        if (flow.request.url[:50] == "https://suggestqueries.google.com/complete/search?" and flow.request.method == 'GET'):
+            print(flow.request.pretty_host)
+            ip = flow.client_conn.address[0]    # get the ip address for the query
+            ys = flow.request.path
+            ys = ys[(ys.find('q=')+2):]
+            ys = ys[:(ys.find('&'))]
+            data["youtube"].append((ip, ys.replace('+', ' ')))
     else:
         #data["web"].append(flow.request.host)
         pass

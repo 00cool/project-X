@@ -5,7 +5,7 @@ config = {
   "authDomain": "student-data-jump.firebaseapp.com",
   "databaseURL": "https://student-data-jump.firebaseio.com",
   "storageBucket": "student-data-jump.appspot.com",
-  "serviceAccount": "/home/nick/work/mitmproxy/student-data-jump-firebase-adminsdk-zzb0l-cfaf56906d.json"
+  "serviceAccount": "/home/project-X/student-data-jump-firebase-adminsdk-zzb0l-cfaf56906d.json"
 }
 
 firebase = pyrebase.initialize_app(config)

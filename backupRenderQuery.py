@@ -15,19 +15,25 @@ data = {
 
 def request (flow: http.HTTPFlow) -> None:
     global data
-    if flow.request.pretty_host ==  "www.google.co.in" and flow.request.method == 'GET':
+    if flow.request.pretty_host ==  "www.google.co.uk" or "www.google.co.in":
         if flow.request.url[25:32] == "search?" and flow.request.method == 'GET' :
+            s = flow.request.path
+            s = s[ ((s.find('q='))+2) :]   # find and trim the query from url
+            s = s[:(s.find('&'))]
             ip = flow.client_conn.address[0]    # get the ip address for the query
-            data["google"].append((ip,dict(flow.request.query)['q']))    # append the (ip, query) to lis
-    elif flow.request.pretty_host == "suggestqueries.google.com" and flow.request.method == 'GET':
-        if (flow.request.url[43:50] == "search?" and flow.request.method == 'GET'):
+            data["google"].append((ip, s.replace('+', ' ')))    # append the (ip, query) to list
+    elif flow.request.pretty_host == "suggestqueries.google.com":    
+        if (flow.request.url[:50] == "https://suggestqueries.google.com/complete/search?" and flow.request.method == 'GET'):
+            print(flow.request.pretty_host)
             ip = flow.client_conn.address[0]    # get the ip address for the query
-            data["youtube"].append((ip, flow.request.query['q']))
+            ys = flow.request.path
+            ys = ys[(ys.find('q=')+2):]
+            ys = ys[:(ys.find('&'))]
+            data["youtube"].append((ip, ys.replace('+', ' ')))
     else:
         #data["web"].append(flow.request.host)
         pass
-    #print(dict(flow.request.headers)['user-agent'])
-    print(flow.request.pretty_host)
+
 
 def clear_data(data, from_str):
     len_g = len(data["google"])

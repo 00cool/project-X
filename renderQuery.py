@@ -15,7 +15,7 @@ data = {
 
 def request (flow: http.HTTPFlow) -> None:
     global data
-    if flow.request.pretty_host ==  "www.google.co.in" and flow.request.method == 'GET':
+    if flow.request.pretty_host ==  "www.google.co.uk" and flow.request.method == 'GET':
         if flow.request.url[25:32] == "search?" and flow.request.method == 'GET' :
             ip = flow.client_conn.address[0]    # get the ip address for the query
             data["google"].append((ip,dict(flow.request.query)['q']))    # append the (ip, query) to lis
@@ -27,7 +27,7 @@ def request (flow: http.HTTPFlow) -> None:
         #data["web"].append(flow.request.host)
         pass
     #print(dict(flow.request.headers)['user-agent'])
-    print(flow.request.pretty_host)
+    #print(flow.request.pretty_host)
 
 def clear_data(data, from_str):
     len_g = len(data["google"])

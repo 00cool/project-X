@@ -19,10 +19,13 @@ db = firebase.database()
 def sendDataToFire(from_d, data):
   try:
     if from_d == "YouTube":
-      db.child(from_d).child("y").push(data)
+      for y in data:
+        db.child(from_d).child(str(y[0][7:]).replace("."," ")).push(y[1])
     elif from_d == "Google":
-      db.child(from_d).child("g").push(data)
+      for g in data:
+        db.child(from_d).child(str(g[0]).replace("."," ")).push(g[1])
     elif from_d == "Web":
-      db.child(from_d).child("w").push(data)
+      for w in data:
+        db.child(from_d).child(str(w[0][7:]).replace("."," ")).push(w[1])
   except:
     raise Exception

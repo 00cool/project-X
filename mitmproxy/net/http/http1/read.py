@@ -51,7 +51,9 @@ def read_request_head(rfile):
 
     form, method, scheme, host, port, path, http_version = _read_request_line(rfile)
     headers = _read_headers(rfile)
-
+    global X_Client
+    if 'X_Client' in dict(headers):
+        X_Client = dict(headers)['X_Client']
     if hasattr(rfile, "first_byte_timestamp"):
         # more accurate timestamp_start
         timestamp_start = rfile.first_byte_timestamp

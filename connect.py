@@ -5,7 +5,11 @@ config = {
   "authDomain": "student-data-jump.firebaseapp.com",
   "databaseURL": "https://student-data-jump.firebaseio.com",
   "storageBucket": "student-data-jump.appspot.com",
+<<<<<<< HEAD
   "serviceAccount": "/home/nick/work/project-X/student-data-jump-firebase-adminsdk-zzb0l-cfaf56906d.json"
+=======
+  "serviceAccount": "/home/project-X/student-data-jump-firebase-adminsdk-zzb0l-cfaf56906d.json"
+>>>>>>> 0174e969983653d2dd7cb33790adc50558464606
 }
 
 firebase = pyrebase.initialize_app(config)
@@ -23,7 +27,11 @@ def sendDataToFire(from_d, data):
         db.child(from_d).child(str(y[0][7:]).replace("."," ")).push(y[1])
     elif from_d == "Google":
       for g in data:
+<<<<<<< HEAD
         db.child(from_d).child(str(g[0]).replace("."," ")).push(g[1])
+=======
+        db.child(from_d).child(str(g[0][7:]).replace("."," ")).push(g[1])
+>>>>>>> 0174e969983653d2dd7cb33790adc50558464606
     elif from_d == "Web":
       for w in data:
         db.child(from_d).child(str(w[0][7:]).replace("."," ")).push(w[1])

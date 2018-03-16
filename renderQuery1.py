@@ -4,13 +4,8 @@ from threading import Thread
 import re, json, sys, threading, time, signal, os
 sys.path.append('../')
 from connect import sendDataToFire
-<<<<<<< HEAD
-from mitmproxy.net.http.http1 import read    
-
-=======
 
 # A common dictionary for storing data on firebase
->>>>>>> 0174e969983653d2dd7cb33790adc50558464606
 data = {
     "google" : [],
     "youtube" : [],
@@ -20,31 +15,25 @@ data = {
 
 def request (flow: http.HTTPFlow) -> None:
     global data
-    if flow.request.pretty_host ==  "www.google.co.uk" and flow.request.method == 'GET':
-        if flow.request.url[25:32] == "search?" and flow.request.method == 'GET' :
-<<<<<<< HEAD
-            ip = read.X_Client
-            data["google"].append((ip,dict(flow.request.query)['q']))
-    elif flow.request.pretty_host == "suggestqueries.google.com" and flow.request.method == 'GET':
-        if (flow.request.url[43:50] == "search?" and flow.request.method == 'GET'):
-            ip = X_Client
-=======
+    if flow.request.pretty_host ==  "www.google.co.uk":
+        if flow.request.url[:32] == "https://www.google.co.uk/search?" and flow.request.method == 'GET' :
+            s = flow.request.path
+            s = s[ ((s.find('q='))+2) :]   # find and trim the query from url
+            s = s[:(s.find('&'))]
             ip = flow.client_conn.address[0]    # get the ip address for the query
-            data["google"].append((ip,dict(flow.request.query)['q']))    # append the (ip, query) to lis
-    elif flow.request.pretty_host == "suggestqueries.google.com" and flow.request.method == 'GET':
-        if (flow.request.url[43:50] == "search?" and flow.request.method == 'GET'):
+            data["google"].append((ip, s.replace('+', ' ')))    # append the (ip, query) to list
+    elif flow.request.pretty_host == "suggestqueries.google.com":    
+        if (flow.request.url[:50] == "https://suggestqueries.google.com/complete/search?" and flow.request.method == 'GET'):
+            print(flow.request.pretty_host)
             ip = flow.client_conn.address[0]    # get the ip address for the query
->>>>>>> 0174e969983653d2dd7cb33790adc50558464606
-            data["youtube"].append((ip, flow.request.query['q']))
+            ys = flow.request.path
+            ys = ys[(ys.find('q=')+2):]
+            ys = ys[:(ys.find('&'))]
+            data["youtube"].append((ip, ys.replace('+', ' ')))
     else:
         #data["web"].append(flow.request.host)
         pass
-    #print(dict(flow.request.headers)['user-agent'])
-<<<<<<< HEAD
-    #print(flow.request)
-=======
-    #print(flow.request.pretty_host)
->>>>>>> 0174e969983653d2dd7cb33790adc50558464606
+
 
 def clear_data(data, from_str):
     len_g = len(data["google"])
@@ -82,9 +71,6 @@ def send_to_fire():
     pass
 
 
-<<<<<<< HEAD
-=======
 
 # start a new thread
->>>>>>> 0174e969983653d2dd7cb33790adc50558464606
 Thread(target = send_to_fire).start()
